@@ -1,6 +1,6 @@
 class UpdatesController < ApplicationController
   def index
-    @updates = Update.all
+    @updates = params[:tag] ? Update.tagged_with(params[:tag]) : Update.all
   end
 
   def new
@@ -18,6 +18,6 @@ class UpdatesController < ApplicationController
   private
 
   def update_params
-    params.require(:updates).permit(:title, :description)
+    params.require(:updates).permit(:title, :description, :tag_list, :tag, { tag_ids: [] }, :tag_ids)
   end
 end

@@ -1,6 +1,35 @@
-<h1>Today I...</h1>
-<ul>
+<h1>Daily Updates</h1>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="formmodal">
+  New Update
+</button>
+
+<div class="modal fade" id="formmodal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLabel">Today's Update</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-content">
+        <%= simple_form_for Update.new do |f| %>
+          <%= f.input :title %>
+          <%= f.input :description %>
+          <%= f.input :tag_ids, as: :select, collection: Tag.order(:category), label_method: :category, input_html: {multiple: true} %>
+      </div>
+      <div class="modal-footer">
+          <%= f.submit "Next", class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div>
   <% @updates.each do |update| %>
-    <li><%= update.user.name %>: <%= update.title %></li>
+    <p><%= update.user.name %>: <%= update.title %></p>
+    <p>Tags: <%= raw update.tags.map(&:category).map { |t| link_to t, tag_path(t) }.join(', ') %></p>
+    <p><%= link_to "View Update", update_path(update) %></p>
   <% end %>
-</ul>
+</div>

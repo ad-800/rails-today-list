@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   resources :updates, only: [:index, :show, :create, :new]
 
   root to: "updates#index"
+  get 'tags/:tag', to: 'updates#index', as: :tag
 end
