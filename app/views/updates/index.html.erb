@@ -1,0 +1,6 @@
+<h1>Today I...</h1>
+<ul>
+  <% @updates.each do |update| %>
+    <li><%= update.user.name %>: <%= update.title %></li>
+  <% end %>
+</ul>
