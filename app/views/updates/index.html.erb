@@ -1,7 +1,7 @@
-<h1>Daily Updates</h1>
+<h1 class="mb-5 mt-5">Daily Updates</h1>
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+<button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
   New Update
 </button>
 
@@ -14,14 +14,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-          <%= simple_form_for Update.new do |f| %>
+          <%= simple_form_for :update, method: :post, url: { action: "create" } do |f| %>
+          <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id } %>
           <%= f.input :title %>
           <%= f.input :description %>
           <%= f.input :tag_ids, as: :select, collection: Tag.order(:category), label_method: :category, input_html: {multiple: true} %>
       </div>
       <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <%= f.submit "Next", class: 'btn btn-primary' %>
+          <%= f.submit "Submit", class: 'btn btn-primary' %>
         <% end %>
       </div>
     </div>
@@ -29,10 +29,15 @@
 </div>
 
 
-<div>
-  <% @updates.each do |update| %>
-    <p><%= update.user.name %>: <%= update.title %></p>
-    <p>Tags: <%= raw update.tags.map(&:category).map { |t| link_to t, tag_path(t) }.join(', ') %></p>
-    <p><%= link_to "View Update", update_path(update) %></p>
-  <% end %>
-</div>
+<% @updates.each do |update| %>
+  <div class="update-box mb-3 d-flex align-items-end flex-column">
+    <div class="d-flex justify-content-around info mb-2">
+      <p><strong><%= update.user.name %>:</strong></p>
+      <p><%= update.title %></p>
+      <p><%= link_to "View Update", update_path(update) %></p>
+    </div>
+    <div class="tags">
+      <p><%= raw update.tags.map(&:category).map { |t| link_to t, tag_path(t) }.join(', ') %></p>
+    </div>
+  </div>
+<% end %>

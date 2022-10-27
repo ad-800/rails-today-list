@@ -1,14 +1,15 @@
 class UpdatesController < ApplicationController
   def index
-    @updates = params[:tag] ? Update.tagged_with(params[:tag]) : Update.all
-  end
-
-  def new
-    @update = Update.new
+    @updates = params[:tag] ? Update.tagged_with(params[:tag]) : Update.all.order(created_at: :desc)
   end
 
   def create
-    @update = Update.create(update_params)
+    @update = Update.create!(title: form_params["title"], description: form_params['description'], user_id: form_params['user_id'])
+    @tags = form_params['tag_ids'][1..-1]
+    @tags.each do |tag|
+      Tagging.create!(tag_id: tag.to_i, update_id: @update.id)
+    end
+    redirect_to updates_path
   end
 
   def show
@@ -17,7 +18,7 @@ class UpdatesController < ApplicationController
 
   private
 
-  def update_params
-    params.require(:updates).permit(:title, :description, :tag_list, :tag, { tag_ids: [] }, :tag_ids)
+  def form_params
+    params.require(:update).permit(:title, :user_id, :description, :tag_list, :tag, { tag_ids: [] }, :tag_ids)
   end
 end
