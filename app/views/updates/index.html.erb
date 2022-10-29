@@ -13,13 +13,13 @@
         <h1 class="modal-title fs-5" id="exampleModalLabel">Today's Update</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-          <%= simple_form_for :update, method: :post, url: { action: "create" } do |f| %>
-          <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id } %>
-          <%= f.input :title %>
-          <%= f.input :description %>
-          <%= f.input :tag_ids, as: :select, collection: Tag.order(:category), label_method: :category, input_html: {multiple: true} %>
-      </div>
+        <div class="modal-body">
+            <%= simple_form_for :update, method: :post, url: { action: "create" } do |f| %>
+            <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id } %>
+            <%= f.input :title %>
+            <%= f.input :description %>
+            <%= f.input :tag_ids, as: :select, collection: Tag.order(:category), label_method: :category, input_html: {multiple: true} %>
+        </div>
       <div class="modal-footer">
           <%= f.submit "Submit", class: 'btn btn-primary' %>
         <% end %>
@@ -30,7 +30,8 @@
 
 
 <% @updates.each do |update| %>
-  <div class="update-box mb-3 d-flex align-items-end flex-column">
+  <div class="update-box mb-3 d-flex align-items-end flex-column mb-5">
+    <p class="go-left"><%= update.created_at.to_date.to_fs(:long_ordinal) %></p>
     <div class="d-flex justify-content-around info mb-2">
       <p><strong><%= update.user.name %>:</strong></p>
       <p><%= update.title %></p>
