@@ -1,4 +1,5 @@
-<h1 class="mb-5 mt-5">Daily Updates</h1>
+<h1 class="mt-5">Daily Updates</h1>
+<p class="mb-5 "><strong>Welcome <%= current_user.name %>.</strong></p>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -28,17 +29,20 @@
   </div>
 </div>
 
-
-<% @updates.each do |update| %>
-  <div class="update-box mb-3 d-flex align-items-end flex-column mb-5">
-    <p class="go-left"><%= update.created_at.to_date.to_fs(:long_ordinal) %></p>
-    <div class="d-flex justify-content-around info mb-2">
-      <p><strong><%= update.user.name %>:</strong></p>
-      <p><%= update.title %></p>
-      <p><%= link_to "View Update", update_path(update) %></p>
+<div class="mb-3">
+  <% @updates.each_with_index do |update, i| %>
+    <div class="update-box d-flex align-items-end flex-column mb-4">
+      <% if i == 0 || @updates[i - 1].created_at.to_date.to_fs(:long_ordinal) != update.created_at.to_date.to_fs(:long_ordinal) %>
+        <p class="go-left mb-1"><%= update.created_at.to_date.to_fs(:long_ordinal) %></p>
+      <% end %>
+      <div class="d-flex justify-content-around info mb-1">
+        <p><strong><%= update.user.name %>:</strong></p>
+        <p><%= update.title %></p>
+        <p><%= link_to "View Update", update_path(update) %></p>
+      </div>
+      <div class="tags">
+        <p><%= raw update.tags.map(&:category).map { |t| link_to t, tag_path(t) }.join(', ') %></p>
+      </div>
     </div>
-    <div class="tags">
-      <p><%= raw update.tags.map(&:category).map { |t| link_to t, tag_path(t) }.join(', ') %></p>
-    </div>
-  </div>
-<% end %>
+  <% end %>
+</div>

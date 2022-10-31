@@ -22,4 +22,6 @@ class Update < ApplicationRecord
       Tag.where(category: n.strip).first_or_create!
     end
   end
+
+  
 end

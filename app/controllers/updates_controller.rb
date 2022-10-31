@@ -4,10 +4,19 @@ class UpdatesController < ApplicationController
   end
 
   def create
-    @update = Update.create!(title: form_params["title"], description: form_params['description'], user_id: form_params['user_id'])
-    @tags = form_params['tag_ids'][1..]
-    @tags.each do |tag|
-      Tagging.create!(tag_id: tag.to_i, update_id: @update.id)
+    @update = Update.new(title: form_params["title"], description: form_params['description'], user_id: form_params['user_id'])
+
+    if
+
+
+
+    if @update.save
+      @tags = form_params['tag_ids'][1..]
+      @tags.each do |tag|
+        Tagging.create!(tag_id: tag.to_i, update_id: @update.id)
+      end
+    else
+      flash[:notice] = "Please enter a unique title."
     end
     redirect_to updates_path
   end
