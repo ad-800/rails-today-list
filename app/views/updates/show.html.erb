@@ -1,2 +1,11 @@
-<h1>Updates#show</h1>
-<p>Find me in app/views/updates/show.html.erb</p>
+<div class="show-update mt-4 mb-4">
+  <p class="text-start mb-3"><%= @update.created_at.to_date.to_fs(:long_ordinal) %></p>
+  <h2 class="mb-1"><%= @update.title.capitalize %></h2>
+  <p class="mb-3"><strong>By <%= @update.user.name %></strong></p>
+  <p><%= @update.description.capitalize %></p>
+  <div class="tags mt-4">
+    <p><%= raw @update.tags.map(&:category).map { |t| link_to t, tag_path(t) }.join(', ') %></p>
+  </div>
+</div>
+
+<%= link_to "Go Back", updates_path, {class: "btn btn-light text-start"} %>

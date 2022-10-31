@@ -1,0 +1,9 @@
+<h1 class="mt-4">Tags</h1>
+<ul class="tag-list d-flex">
+  <% @tags.each do |tag| %>
+    <li>
+      <%= link_to "#{tag.category}", tag_path(tag.category) %>
+      (<%= Tagging.where(tag_id: tag.id).count %>)
+    </li>
+  <% end %>
+</ul>

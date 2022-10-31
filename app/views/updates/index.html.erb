@@ -1,5 +1,5 @@
 <h1 class="mt-5">Daily Updates</h1>
-<p class="mb-5 "><strong>Welcome <%= current_user.name %>.</strong></p>
+<p class="mb-5 "><strong>Welcome, <%= current_user.name %>.</strong></p>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -40,7 +40,7 @@
         <p><%= update.title %></p>
         <p><%= link_to "View Update", update_path(update) %></p>
       </div>
-      <div class="tags">
+      <div class="tags mt-2">
         <p><%= raw update.tags.map(&:category).map { |t| link_to t, tag_path(t) }.join(', ') %></p>
       </div>
     </div>

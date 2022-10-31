@@ -1,15 +1,12 @@
-.update-box {
-  .info {
-    border: 1px solid black;
-    align-items: center;
-    height: 75px;
-    min-width: 600px;
-  }
-  
+.show-update {
+  width: 600px;
+  text-align: center;
+  padding: 25px;
+  border: 1px solid black;
+
   .tags {
     border: 1px solid black;
     background-color: $blue;
-    width: fit-content;
     padding: 0px 25px;
     color: white;
 
@@ -22,4 +19,8 @@
       text-decoration: underline;
     }
   }
+}
+
+.btn-light {
+  border: 1px solid black;
 }
