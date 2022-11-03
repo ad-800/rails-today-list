@@ -1,6 +1,7 @@
 class UpdatesController < ApplicationController
   def index
     @updates = params[:tag] ? Update.tagged_with(params[:tag]) : Update.order(created_at: :desc).limit(50)
+    @h1 = params[:tag] ? "##{params[:tag]}" : "Daily Updates"
   end
 
   def create
@@ -13,8 +14,13 @@ class UpdatesController < ApplicationController
     end
 
     if @update.save
-      @tags = form_params['tag_ids'][1..]
-      @tags.each { |tag| Tagging.create!(tag_id: tag.to_i, update_id: @update.id) }
+      if !form_params["new_tag"].empty?
+        new_tag = Tag.create!(category: form_params["new_tag"])
+        Tagging.create!(tag_id: new_tag.id, update_id: @update.id)
+      else
+        @tags = form_params['tag_ids'][1..]
+        @tags.each { |tag| Tagging.create!(tag_id: tag.id, update_id: @update.id) }
+      end
     else
       flash[:notice] = "Please enter a unique title."
     end
@@ -33,6 +39,6 @@ class UpdatesController < ApplicationController
   end
 
   def form_params
-    params.require(:update).permit(:title, :user_id, :description, :tag_list, :tag, { tag_ids: [] }, :tag_ids)
+    params.require(:update).permit(:title, :user_id, :description, :tag_list, :tag, { tag_ids: [] }, :tag_ids, :new_tag)
   end
 end

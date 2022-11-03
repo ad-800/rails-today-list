@@ -6,7 +6,11 @@ class Update < ApplicationRecord
   validates :title, uniqueness: { scope: :user_id }
 
   def self.tagged_with(name)
-    Tag.find_by!(category: name).updates
+    tag_name = Tag.find_by!(category: name)
+    taggings = Tagging.where(tag_id: tag_name)
+    taggings.map do |tag|
+      Update.find_by!(id: tag.update_id)
+    end
   end
 
   def self.tag_counts

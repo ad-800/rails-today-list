@@ -1,5 +1,5 @@
-<h1 class="mt-5">Daily Updates</h1>
-<p class="mb-5 "><strong>Welcome, <%= current_user.name %>.</strong></p>
+<h1 class="mt-5"><%= @h1 %></h1>
+<p class="mb-5 "><strong>Hi, <%= current_user.name %>.</strong></p>
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -15,11 +15,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
         <div class="modal-body">
-            <%= simple_form_for :update, method: :post, url: { action: "create" } do |f| %>
+          <%= simple_form_for :update, method: :post, url: { action: "create" } do |f| %>
             <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id } %>
             <%= f.input :title %>
             <%= f.input :description %>
             <%= f.input :tag_ids, as: :select, collection: Tag.order(:category), label_method: :category, input_html: {multiple: true} %>
+            <%= f.input :new_tag, required: false %>
         </div>
       <div class="modal-footer">
           <%= f.submit "Submit", class: 'btn btn-primary' %>
