@@ -14,13 +14,8 @@ class UpdatesController < ApplicationController
     end
 
     if @update.save
-      if !form_params["new_tag"].empty?
-        new_tag = Tag.create!(category: form_params["new_tag"])
-        Tagging.create!(tag_id: new_tag.id, update_id: @update.id)
-      else
-        @tags = form_params['tag_ids'][1..]
-        @tags.each { |tag| Tagging.create!(tag_id: tag.id, update_id: @update.id) }
-      end
+      custom_tags unless form_params["new_tags"].empty?
+      select_tags if form_params['tag_ids'].length > 1
     else
       flash[:notice] = "Please enter a unique title."
     end
@@ -33,12 +28,25 @@ class UpdatesController < ApplicationController
 
   private
 
+  def select_tags
+    form_params['tag_ids'][1..].each { |tag| Tagging.create!(tag_id: tag, update_id: @update.id) }
+  end
+
+  def custom_tags
+    form_params["new_tags"].gsub(/\s+/, '').split(',').each do |new_tag|
+      unless Tag.where("category ILIKE ?", new_tag).empty?
+        last_tag = Tag.create!(category: new_tag)
+        Tagging.create!(tag_id: last_tag.id, update_id: @update.id)
+      end
+    end
+  end
+
   def one_a_day?
     prev_update = current_user.updates.last
     return prev_update && prev_update.created_at.to_date.to_fs(:long_ordinal) == DateTime.now.to_date.to_fs(:long_ordinal)
   end
 
   def form_params
-    params.require(:update).permit(:title, :user_id, :description, :tag_list, :tag, { tag_ids: [] }, :tag_ids, :new_tag)
+    params.require(:update).permit(:title, :user_id, :description, :tag_list, :tag, { tag_ids: [] }, :tag_ids, :new_tags)
   end
 end

@@ -19,8 +19,8 @@
             <%= f.input :user_id, as: :hidden, input_html: { value: current_user.id } %>
             <%= f.input :title %>
             <%= f.input :description %>
-            <%= f.input :tag_ids, as: :select, collection: Tag.order(:category), label_method: :category, input_html: {multiple: true} %>
-            <%= f.input :new_tag, required: false %>
+            <%= f.input :tag_ids, as: :select, collection: Tag.order(:category), label_method: :category, input_html: {multiple: true}, required: false %>
+            <%= f.input :new_tags, required: false %>
         </div>
       <div class="modal-footer">
           <%= f.submit "Submit", class: 'btn btn-primary' %>
