@@ -6,6 +6,16 @@
   New Update
 </button>
 
+<!-- Search Bar -->
+<%= form_with url: updates_path, method: :get, class: "d-flex mb-5 search-bar" do %>
+  <%= text_field_tag :query,
+    params[:query],
+    class: "form-control",
+    placeholder: "Find updates by user"
+  %>
+  <%= submit_tag "Search", class: "btn-light" %>
+<% end %>
+
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -30,6 +40,7 @@
   </div>
 </div>
 
+<!-- Updates -->
 <div class="mb-3">
   <% @updates.each_with_index do |update, i| %>
     <div class="update-box d-flex align-items-end flex-column mb-4">

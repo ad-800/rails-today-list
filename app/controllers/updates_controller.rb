@@ -1,6 +1,14 @@
 class UpdatesController < ApplicationController
   def index
-    @updates = params[:tag] ? Update.tagged_with(params[:tag]) : Update.order(created_at: :desc).limit(50)
+    if @query.present? && params[:tag] # this does not work
+      @updates = User.where("name ILIKE ?", "%#{params[:query]}%").first.updates.tagged_with(params[:tag]).reverse
+    elsif params[:query].present?
+      @updates = User.where("name ILIKE ?", "%#{params[:query]}%").first.updates.reverse
+    elsif params[:tag]
+      @updates = Update.tagged_with(params[:tag]).reverse
+    else
+      @updates = Update.order(created_at: :desc).limit(50)
+    end
     @h1 = params[:tag] ? "##{params[:tag]}" : "Daily Updates"
   end
 
